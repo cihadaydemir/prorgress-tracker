@@ -3,7 +3,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { CameraCapturedPicture, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function CameraScreen(){
   const [facing, setFacing] = useState<CameraType>('back');
@@ -32,6 +32,10 @@ export default function CameraScreen(){
     setImages([]);
   };
 
+  const handleDoneBtn = () => {
+    console.log("persisted images", images)
+  };
+
   return (
     <View style={styles.container}>
       <CameraView style={styles.camera} facing={facing} ref={cameraRef} >
@@ -51,7 +55,7 @@ export default function CameraScreen(){
         <View style={styles.imagesContainer}>
           {
             images.map((image, index) => (
-              <View style={styles.imageContainer}>
+              <View style={styles.imageContainer} key={image.uri}>
                 <Image
                   key={index}
                   source={{ uri: image.uri }}
@@ -59,7 +63,7 @@ export default function CameraScreen(){
                 />
                 <View style={styles.deleteImageButton}>
                   <TouchableOpacity onPress={() => setImages(prev => prev.filter((_, i) => i !== index))}> 
-                    <Ionicons name="close" size={24} color="black" />
+                    <Ionicons name="close" size={18} color="black" />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -70,6 +74,11 @@ export default function CameraScreen(){
           <TouchableOpacity onPress={handleCapture}>
             <View style={styles.captureButton} />
           </TouchableOpacity>
+          {images.length > 0 && (
+            <TouchableOpacity onPress={handleDoneBtn} style={styles.doneButton}>
+              <Text>Done</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </CameraView>
     </View>
@@ -111,16 +120,26 @@ const styles = StyleSheet.create({
   },
   captureButtonContainer: {
     position: 'absolute',
+    flexDirection: 'row',
     bottom: 32,
-    left: 0,
-    right: 0,
+    width: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   captureButton: {
     width: 70,
     height: 70,
     borderRadius: 35,
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+  doneButton: {
+    position: 'absolute',
+    right: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    padding: 10,
+    borderRadius: 10,
     borderWidth: 2,
     borderColor: 'white',
   },
