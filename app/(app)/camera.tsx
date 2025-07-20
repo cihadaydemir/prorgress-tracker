@@ -1,12 +1,15 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
+import { CameraCapturedPicture, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 export default function CameraScreen(){
   const [facing, setFacing] = useState<CameraType>('back');
+  const [images, setImages] = useState<CameraCapturedPicture[]>([]);
+  const cameraRef = useRef<CameraView>(null);
+  
   const [permission, requestPermission] = useCameraPermissions();
   const router = useRouter();
 
@@ -20,12 +23,23 @@ export default function CameraScreen(){
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
+  const handleCapture = async () => {
+    const photo = await cameraRef?.current?.takePictureAsync();
+    if (!photo) return;
+    setImages(prev => [...prev, photo]);
+  };
+
+  const handleOnBack = () => {
+    router.back();
+    setImages([]);
+  };
+
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing}>
+      <CameraView style={styles.camera} facing={facing} ref={cameraRef} >
         <View style={styles.closeButton}>
           <TouchableOpacity
-              onPress={() => router.back()}
+              onPress={handleOnBack}
           
           >
             <Ionicons name="close" size={24} color="white" />
@@ -34,6 +48,29 @@ export default function CameraScreen(){
           <View style={styles.actionButtons}>
           <TouchableOpacity  onPress={toggleCameraFacing}>
   <MaterialIcons name="flip-camera-ios" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.imagesContainer}>
+          {
+            images.map((image, index) => (
+              <View style={styles.imageContainer}>
+                <Image
+                  key={index}
+                  source={{ uri: image.uri }}
+                  style={styles.image}
+                />
+                <View style={styles.deleteImageButton}>
+                  <TouchableOpacity onPress={() => setImages(prev => prev.filter((_, i) => i !== index))}> 
+                    <Ionicons name="close" size={24} color="black" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+            ))
+          }
+        </View>
+        <View style={styles.captureButtonContainer}>
+          <TouchableOpacity onPress={handleCapture}>
+            <View style={styles.captureButton} />
           </TouchableOpacity>
         </View>
       </CameraView>
@@ -74,5 +111,46 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
+  captureButtonContainer: {
+    position: 'absolute',
+    bottom: 32,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  captureButton: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+  imagesContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    bottom: 120,
+    left: 16,
+    zIndex: 1,
+  },
+  imageContainer:{
+    flexDirection: 'row',
+  },
+  deleteImageButton:{
+    position:"absolute",
+    top: 0,
+    right: 0,
+    zIndex: 1,
+    backgroundColor:"white",
+    borderRadius:100,
+
+  },
+  image: {
+    width: 60,
+    height: 60,
+    margin: 8,
+  }
 });
 
