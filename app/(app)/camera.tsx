@@ -1,88 +1,39 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { CameraCapturedPicture, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
-import { useRouter } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { CameraView } from 'expo-camera';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { ActionButtons } from './components/ActionButtons';
+import { CaptureButton } from './components/CaptureButton';
+import { ImageGallery } from './components/ImageGallery';
+import { useCamera } from './hooks/useCamera';
 
-export default function CameraScreen(){
-  const [facing, setFacing] = useState<CameraType>('back');
-  const [images, setImages] = useState<CameraCapturedPicture[]>([]);
-  const cameraRef = useRef<CameraView>(null);
-  
-  const [permission, requestPermission] = useCameraPermissions();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!permission?.granted) {
-      requestPermission()  
-    }
-  }, [permission?.status]);
-
-  const toggleCameraFacing = () => setFacing(current => (current === 'back' ? 'front' : 'back'));
-
-  const handleCapture = async () => {
-    const photo = await cameraRef?.current?.takePictureAsync();
-    if (!photo) return;
-    setImages(prev => [...prev, photo]);
-  };
-
-  const handleOnBack = () => {
-    router.back();
-    setImages([]);
-  };
-
-  const handleDoneBtn = () => {
-    console.log("persisted images", images)
-  };
+export default function CameraScreen() {
+  const {
+    facing,
+    images,
+    cameraRef,
+    handleCapture,
+    handleDoneBtn,
+    handleOnBack,
+    removeImage,
+    toggleCameraFacing,
+  } = useCamera();
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing} ref={cameraRef} >
-        <View style={styles.closeButton}>
-          <TouchableOpacity
-              onPress={handleOnBack}
-          
-          >
-            <Ionicons name="close" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
-          <View style={styles.actionButtons}>
-          <TouchableOpacity  onPress={toggleCameraFacing}>
-  <MaterialIcons name="flip-camera-ios" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.imagesContainer}>
-          {
-            images.map((image, index) => (
-              <View style={styles.imageContainer} key={image.uri}>
-                <Image
-                  key={index}
-                  source={{ uri: image.uri }}
-                  style={styles.image}
-                />
-                <View style={styles.deleteImageButton}>
-                  <TouchableOpacity onPress={() => setImages(prev => prev.filter((_, i) => i !== index))}> 
-                    <Ionicons name="close" size={18} color="black" />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-            ))
-          }
-        </View>
-        <View style={styles.captureButtonContainer}>
-          <TouchableOpacity onPress={handleCapture}>
-            <View style={styles.captureButton} />
-          </TouchableOpacity>
-          {images.length > 0 && (
-            <TouchableOpacity onPress={handleDoneBtn} style={styles.doneButton}>
-              <Text>Done</Text>
-            </TouchableOpacity>
-          )}
-        </View>
+      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+        <ActionButtons
+          handleOnBack={handleOnBack}
+          toggleCameraFacing={toggleCameraFacing}
+        />
+        <ImageGallery images={images} removeImage={removeImage} />
+        <CaptureButton
+          handleCapture={handleCapture}
+          handleDoneBtn={handleDoneBtn}
+          images={images}
+        />
       </CameraView>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -90,84 +41,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  message: {
-    textAlign: 'center',
-    paddingBottom: 10,
-  },
   camera: {
     flex: 1,
   },
-  actionButtons: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    position: 'absolute',
-    top:16,
-    right: 16,
-    zIndex:1
-  },
-  closeButton:{
-    position: 'absolute',
-    top: 16,
-    left: 16,
-    zIndex: 1,
-  },
-
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  captureButtonContainer: {
-    position: 'absolute',
-    flexDirection: 'row',
-    bottom: 32,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  captureButton: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-    borderWidth: 2,
-    borderColor: 'white',
-  },
-  doneButton: {
-    position: 'absolute',
-    right: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: 'white',
-  },
-  imagesContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    position: 'absolute',
-    bottom: 120,
-    left: 16,
-    zIndex: 1,
-  },
-  imageContainer:{
-    flexDirection: 'row',
-  },
-  deleteImageButton:{
-    position:"absolute",
-    top: 0,
-    right: 0,
-    zIndex: 1,
-    backgroundColor:"white",
-    borderRadius:100,
-
-  },
-  image: {
-    width: 60,
-    height: 60,
-    margin: 8,
-  }
 });
 
