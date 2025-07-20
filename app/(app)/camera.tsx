@@ -19,9 +19,7 @@ export default function CameraScreen(){
     }
   }, [permission?.status]);
 
-   function toggleCameraFacing() {
-    setFacing(current => (current === 'back' ? 'front' : 'back'));
-  }
+  const toggleCameraFacing = () => setFacing(current => (current === 'back' ? 'front' : 'back'));
 
   const handleCapture = async () => {
     const photo = await cameraRef?.current?.takePictureAsync();
