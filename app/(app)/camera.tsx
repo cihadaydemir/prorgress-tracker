@@ -1,10 +1,10 @@
 import { CameraView } from 'expo-camera';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ActionButtons } from './components/ActionButtons';
-import { CaptureButton } from './components/CaptureButton';
-import { ImageGallery } from './components/ImageGallery';
-import { useCamera } from './hooks/useCamera';
+import { ActionButtons } from '../../components/ActionButtons';
+import { CaptureButton } from '../../components/CaptureButton';
+import { ImageGallery } from '../../components/ImageGallery';
+import { useCamera } from '../../hooks/useCamera';
 
 export default function CameraScreen() {
   const {
