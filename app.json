@@ -25,6 +25,13 @@
     },
     "plugins": [
       [
+        "expo-sqlite",
+        {
+          "enableFTS": true
+          // "useSQLCipher": true
+        }
+      ],
+      [
         "expo-camera",
         {
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
