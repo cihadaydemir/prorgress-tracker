@@ -31,7 +31,7 @@ export const progressTable = sqliteTable("progress_table", {
   chestCircumference: int("chest_circumference").notNull(),
   shoulderWidth: int("shoulder_width").notNull(),
 abdominalGirth: int("abdominal_girth").notNull(),
-images: text("images").notNull(),
+
 });
 
 export const imagePathsTable = sqliteTable("image_paths_table", {
