@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "88fe50f3-0666-4ccf-bf01-b6f4c06b6f3f",
+  "id": "b48b5e9b-e8ca-4704-beca-1f3053597321",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "image_paths_table": {
@@ -163,13 +163,6 @@
         "abdominal_girth": {
           "name": "abdominal_girth",
           "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "images": {
-          "name": "images",
-          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false

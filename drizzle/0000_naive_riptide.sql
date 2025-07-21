@@ -22,7 +22,6 @@ CREATE TABLE `progress_table` (
 	`chest_circumference` integer NOT NULL,
 	`shoulder_width` integer NOT NULL,
 	`abdominal_girth` integer NOT NULL,
-	`images` text NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `users_table`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint

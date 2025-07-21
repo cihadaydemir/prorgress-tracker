@@ -1,25 +1,24 @@
 import { db } from "@/db/db";
 import { usersTable } from "@/db/schema";
-import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
 
-export default  function Home() {
-  const [users, setUsers] = useState<typeof usersTable.$inferSelect[] | null>([]);
+import { useLiveQuery } from "drizzle-orm/expo-sqlite";
+import { Button, Text, View } from "react-native";
 
-  useEffect(() => {
-    (async ()=>{
+export default function Home() {
+  const { data: users } = useLiveQuery(db.query.usersTable.findMany());
 
-         db.insert(usersTable).values({
-      name:"Foo",
-      age:25,
-      height:160,
-    })
-
-      const users = await db.select().from(usersTable);
-      console.log('users',users)
-      setUsers(users);
-    })
-  });
+  const insert = async () => {
+    console.log('insert triggered')
+    const insertedUser = await db
+      .insert(usersTable)
+      .values({
+        name: "Foo",
+        age: 25,
+        height: 160,
+      })
+      .returning();
+    console.log("inserting user", insertedUser);
+  };
 
   return (
     <View
@@ -30,9 +29,25 @@ export default  function Home() {
       }}
     >
       <Text>Home</Text>
-      {users?.map((user) => (
-        <Text key={user.id}>{user.name}</Text>
-      ))}
+      <Button title="Insert Mock" onPress={insert} />
+
+      <View
+        style={{
+          flex: 1,
+          gap: 10,
+        }}
+      >
+        {users?.map((user) => (
+          <Text
+            key={user.id}
+            style={{
+              color: "black",
+            }}
+          >
+            {user.name}
+          </Text>
+        ))}
+      </View>
     </View>
   );
 }

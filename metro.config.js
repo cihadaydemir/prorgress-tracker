@@ -2,5 +2,10 @@ const { getDefaultConfig } = require('expo/metro-config');
 
 /** @type {import('expo/metro-config').MetroConfig} */
 const config = getDefaultConfig(__dirname);
-config.resolver.sourceExts.push('sql');
+
+// Add support for .mjs files.
+config.resolver.sourceExts.push('mjs');
+// Add support for .sql files.
+config.resolver.assetExts.push('sql');
+
 module.exports = config;

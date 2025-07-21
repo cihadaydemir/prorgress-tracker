@@ -29,12 +29,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      [
-        "expo-sqlite",
-        {
-          "enableFTS": true
-        }
-      ],
+      "expo-sqlite",
       [
         "expo-camera",
         {

@@ -1,6 +1,10 @@
 
-import { drizzle } from 'drizzle-orm/expo-sqlite/driver';
-import * as SQLite from 'expo-sqlite';
 
-export const expo = SQLite.openDatabaseSync('db.db');
-export const db = drizzle(expo);
+import * as schema from '@/db/schema';
+import { drizzle } from 'drizzle-orm/expo-sqlite/driver';
+import { openDatabaseSync } from 'expo-sqlite';
+
+export const DATABASE_NAME = "db.db";
+
+export const expo_sqlite = openDatabaseSync(DATABASE_NAME, { enableChangeListener: true });
+export const db = drizzle(expo_sqlite, { schema });
