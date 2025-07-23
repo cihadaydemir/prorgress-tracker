@@ -1,4 +1,5 @@
 import { customAlphabet } from "nanoid";
+import 'react-native-get-random-values';
 
 const alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
