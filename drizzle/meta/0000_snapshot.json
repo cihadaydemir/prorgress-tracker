@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "b48b5e9b-e8ca-4704-beca-1f3053597321",
+  "id": "1cf19130-a69c-431f-9b33-2405744cd41b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "image_paths_table": {
@@ -78,7 +78,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -188,7 +188,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },

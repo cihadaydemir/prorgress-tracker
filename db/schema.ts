@@ -25,7 +25,7 @@ export const usersTable = sqliteTable("users_table", {
 
 export const progressTable = sqliteTable("progress_table", {
   ...defaultFields('progress'),
-  userId: text("user_id").notNull().references(() => usersTable.id),
+    userId: text("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }),
   weight: int("weight").notNull(),
   hipCircumference: int("hip_circumference").notNull(),
   chestCircumference: int("chest_circumference").notNull(),
@@ -36,7 +36,7 @@ abdominalGirth: int("abdominal_girth").notNull(),
 
 export const imagePathsTable = sqliteTable("image_paths_table", {
   ...defaultFields('image'),
-  progressId: text("progress_id").notNull().references(() => progressTable.id),
+    progressId: text("progress_id").notNull().references(() => progressTable.id, { onDelete: "cascade" }),
   path: text("path").notNull(),
 });
 

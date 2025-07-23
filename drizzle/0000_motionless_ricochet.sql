@@ -6,7 +6,7 @@ CREATE TABLE `image_paths_table` (
 	`deleted_at` text,
 	`progress_id` text NOT NULL,
 	`path` text NOT NULL,
-	FOREIGN KEY (`progress_id`) REFERENCES `progress_table`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`progress_id`) REFERENCES `progress_table`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `image_paths_table_id_unique` ON `image_paths_table` (`id`);--> statement-breakpoint
@@ -22,7 +22,7 @@ CREATE TABLE `progress_table` (
 	`chest_circumference` integer NOT NULL,
 	`shoulder_width` integer NOT NULL,
 	`abdominal_girth` integer NOT NULL,
-	FOREIGN KEY (`user_id`) REFERENCES `users_table`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`user_id`) REFERENCES `users_table`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `progress_table_id_unique` ON `progress_table` (`id`);--> statement-breakpoint
