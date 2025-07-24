@@ -14,6 +14,8 @@ import { usersTable, progressTable } from "@/db/schema";
 
 const setupSchema = insertUserSchema.merge(insertProgressSchema.omit({ userId: true }));
 
+export type SetupSchema = z.infer<typeof setupSchema>;
+
 export default function SetupPage() {
   const router = useRouter();
   const form = useForm<z.infer<typeof setupSchema>>({

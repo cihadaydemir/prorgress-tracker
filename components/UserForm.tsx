@@ -1,4 +1,5 @@
 import { Control } from "react-hook-form";
+import { SetupSchema } from "@/app/(app)/setup";
 
 import {
   FormControl,
@@ -9,7 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-export function UserForm({ control }: { control: Control<any> }) {
+export function UserForm({ control }: { control: Control<SetupSchema> }) {
   return (
     <>
       <FormField

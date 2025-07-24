@@ -1,3 +1,4 @@
+import { SetupSchema } from "@/app/(app)/setup";
 import { Control } from "react-hook-form";
 
 import {
@@ -9,7 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-export function ProgressForm({ control }: { control: Control<any> }) {
+export function ProgressForm({ control }: { control: Control<SetupSchema> }) {
   return (
     <>
       <FormField
