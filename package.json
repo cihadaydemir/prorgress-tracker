@@ -13,11 +13,13 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
+    "@hookform/resolvers": "^5.1.1",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
     "@react-navigation/native": "^7.1.6",
     "babel-plugin-inline-import": "^3.0.0",
     "drizzle-orm": "^0.44.3",
+    "drizzle-zod": "^0.8.2",
     "expo": "~53.0.15",
     "expo-blur": "~14.1.5",
     "expo-camera": "~16.1.11",
@@ -37,6 +39,7 @@
     "nanoid": "^5.1.5",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-hook-form": "^7.61.1",
     "react-native": "0.79.4",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-get-random-values": "^1.11.0",
@@ -44,7 +47,8 @@
     "react-native-safe-area-context": "^5.5.2",
     "react-native-screens": "~4.11.1",
     "react-native-web": "~0.20.0",
-    "react-native-webview": "13.13.5"
+    "react-native-webview": "13.13.5",
+    "zod": "^4.0.9"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
