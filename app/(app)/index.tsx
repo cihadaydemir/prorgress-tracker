@@ -1,30 +1,17 @@
 // import { db } from "@/db/db";
-import { usersTable } from "@/db/schema";
 
 import { DATABASE_NAME } from "@/db/db";
 import * as schema from "@/db/schema";
+import { eq } from "drizzle-orm";
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { openDatabaseSync } from "expo-sqlite";
-import { Button, Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export const expo_sqlite = openDatabaseSync(DATABASE_NAME, { enableChangeListener: true });
 export const db = drizzle(expo_sqlite, { schema });
 
 export default function Home() {
   const { data: users } = useLiveQuery(db.query.usersTable.findMany());
-  console.log('users', users)
-  const insert = async () => {
-    console.log('insert triggered')
-    const insertedUser = await db
-      .insert(usersTable)
-      .values({
-        name: "Foo",
-        age: 25,
-        height: 160,
-      })
-      .returning();
-    console.log("inserting user", insertedUser);
-  };
 
   return (
     <View
@@ -35,19 +22,7 @@ export default function Home() {
       }}
     >
       <Text>Home</Text>
-      <Button title="Insert Mock" onPress={async ()=>{
-        try{
-
-          const insertedUser = await db.insert(usersTable).values({
-           name:"Cihad2",
-           age:25,
-           height:180,
-         }).returning()
-         console.log('insertedUser',insertedUser)
-        }catch(e){
-          console.log('error',e)
-        }
-      }} />
+     
 
       <View
         style={{
@@ -56,6 +31,9 @@ export default function Home() {
         }}
       >
         {users?.map((user) => (
+          <TouchableOpacity onPress={async ()=>{
+            await db.delete(schema.usersTable).where(eq(schema.usersTable.id,user.id))
+          }}>
           <Text
             key={user.id}
             style={{
@@ -64,6 +42,7 @@ export default function Home() {
           >
             {user.name}
           </Text>
+          </TouchableOpacity>
         ))}
       </View>
     </View>

@@ -1,9 +1,8 @@
 
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Tabs, useRouter } from 'expo-router';
+import { Tabs } from 'expo-router';
 import React from 'react';
 const AppLayout = () => {
-  const router = useRouter();
 
   return (
     <Tabs screenOptions={{ headerShown: false }}>

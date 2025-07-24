@@ -10,6 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function RootLayout() {
   const { success, error } = useMigrations(db, migrations);
   useDrizzleStudio(expo_sqlite);
+
   console.log('migration state',{success, error})
   if (error) {
     return (
@@ -25,7 +26,7 @@ export default function RootLayout() {
       </View>
     );
   }
-
+  
   return (
     <Suspense fallback={<ActivityIndicator size="large" />}>
       <SafeAreaView style={{ flex: 1 }}>
