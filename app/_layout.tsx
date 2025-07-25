@@ -1,3 +1,5 @@
+import "../global.css";
+
 import { db, expo_sqlite } from "@/db/db";
 import migrations from "@/drizzle/migrations";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
