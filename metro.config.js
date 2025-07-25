@@ -9,6 +9,4 @@ config.resolver.sourceExts.push('mjs');
 // Add support for .sql files.
 config.resolver.sourceExts.push('sql');
 
-module.exports = config;
-
 module.exports = withNativeWind(config, { input: './global.css' })
