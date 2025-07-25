@@ -1,18 +1,18 @@
-import * as React from "react";
-import { Text, StyleSheet, type TextProps } from "react-native";
+import * as React from "react"
+import { StyleSheet, Text, type TextProps } from "react-native"
 
 const Label = React.forwardRef<Text, TextProps>(({ style, ...props }, ref) => {
-  return <Text style={[styles.label, style]} ref={ref} {...props} />;
-});
+	return <Text style={[styles.label, style]} ref={ref} {...props} />
+})
 
-Label.displayName = "Label";
+Label.displayName = "Label"
 
 const styles = StyleSheet.create({
-  label: {
-    fontSize: 16,
-    fontWeight: "500",
-    marginBottom: 8,
-  },
-});
+	label: {
+		fontSize: 16,
+		fontWeight: "500",
+		marginBottom: 8,
+	},
+})
 
-export { Label };
+export { Label }

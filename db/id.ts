@@ -1,18 +1,18 @@
-import { customAlphabet } from "nanoid";
-import 'react-native-get-random-values';
+import { customAlphabet } from "nanoid"
+import "react-native-get-random-values"
 
-const alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+const alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 
-const nanoid = customAlphabet(alphabet);
+const nanoid = customAlphabet(alphabet)
 
 const prefixes = {
 	user: "usr",
 	progress: "prg",
 	image: "img",
-} as const;
+} as const
 
-export type IdPrefix = keyof typeof prefixes;
+export type IdPrefix = keyof typeof prefixes
 
 export function newId(prefix: IdPrefix): string {
-	return [prefixes[prefix], nanoid(17)].join("_");
+	return [prefixes[prefix], nanoid(17)].join("_")
 }

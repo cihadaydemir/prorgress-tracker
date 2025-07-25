@@ -1,20 +1,20 @@
-import * as React from "react";
-import { TextInput, StyleSheet, type TextInputProps } from "react-native";
+import * as React from "react"
+import { StyleSheet, TextInput, type TextInputProps } from "react-native"
 
 const Input = React.forwardRef<TextInput, TextInputProps>(({ style, ...props }, ref) => {
-  return <TextInput style={[styles.input, style]} ref={ref} {...props} />;
-});
+	return <TextInput style={[styles.input, style]} ref={ref} {...props} />
+})
 
-Input.displayName = "Input";
+Input.displayName = "Input"
 
 const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-  },
-});
+	input: {
+		height: 40,
+		borderColor: "gray",
+		borderWidth: 1,
+		borderRadius: 8,
+		paddingHorizontal: 10,
+	},
+})
 
-export { Input };
+export { Input }
