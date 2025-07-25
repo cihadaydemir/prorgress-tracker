@@ -1,11 +1,11 @@
 // import { db } from "@/db/db";
 
+import { DATABASE_NAME } from "@/db/db"
+import * as schema from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { openDatabaseSync } from "expo-sqlite"
 import { Text, TouchableOpacity, View } from "react-native"
-import { DATABASE_NAME } from "@/db/db"
-import * as schema from "@/db/schema"
 
 export const expo_sqlite = openDatabaseSync(DATABASE_NAME, { enableChangeListener: true })
 export const db = drizzle(expo_sqlite, { schema })
@@ -31,6 +31,7 @@ export default function Home() {
 			>
 				{users?.map((user) => (
 					<TouchableOpacity
+						key={user.id}
 						onPress={async () => {
 							await db.delete(schema.usersTable).where(eq(schema.usersTable.id, user.id))
 						}}

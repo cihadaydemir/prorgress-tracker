@@ -52,7 +52,7 @@ export default function SetupPage() {
 					shoulderWidth: values.shoulderWidth,
 					abdominalGirth: values.abdominalGirth,
 				})
-				router.push("/(app)")
+				router.push("/(app)/(tabs)")
 			}
 		} catch (error) {
 			console.error("Error during setup:", error)

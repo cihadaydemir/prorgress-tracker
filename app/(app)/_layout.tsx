@@ -1,33 +1,23 @@
-import Ionicons from "@expo/vector-icons/Ionicons"
-import { Tabs } from "expo-router"
-import React from "react"
+import { db } from "@/db/db"
+import { useLiveQuery } from "drizzle-orm/expo-sqlite"
+import { Redirect, Stack } from "expo-router"
 
-const AppLayout = () => {
+export default function AppLayout() {
+	const user = useLiveQuery(db.query.usersTable.findFirst())
+
+	if (!user) {
+		return <Redirect href={"/setup"} />
+	}
+
 	return (
-		<Tabs screenOptions={{ headerShown: false }}>
-			<Tabs.Screen
-				name="index"
+		<Stack screenOptions={{ headerShown: false }}>
+			<Stack.Screen name="(tabs)" />
+			<Stack.Screen
+				name="(screens)"
 				options={{
-					title: "Home",
-					tabBarIcon: ({ color, size }) => <Ionicons name="home" size={size} color={color} />,
+					presentation: "formSheet",
 				}}
 			/>
-			<Tabs.Screen
-				name="camera"
-				options={{
-					tabBarStyle: { display: "none" },
-					tabBarIcon: ({ color, size }) => <Ionicons name="camera" size={size} color={color} />,
-				}}
-			/>
-			<Tabs.Screen
-				name="statistics"
-				options={{
-					title: "Statistics",
-					tabBarIcon: ({ color, size }) => <Ionicons name="stats-chart" size={size} color={color} />,
-				}}
-			/>
-		</Tabs>
+		</Stack>
 	)
 }
-
-export default AppLayout
