@@ -1,7 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons"
 import MaterialIcons from "@expo/vector-icons/MaterialIcons"
 import type React from "react"
-import { StyleSheet, TouchableOpacity, View } from "react-native"
+import { TouchableOpacity, View } from "react-native"
 
 interface ActionButtonsProps {
 	handleOnBack: () => void
@@ -11,12 +11,12 @@ interface ActionButtonsProps {
 export const ActionButtons: React.FC<ActionButtonsProps> = ({ handleOnBack, toggleCameraFacing }) => {
 	return (
 		<>
-			<View style={styles.closeButton}>
+			<View className="absolute top-4 left-4 z-10">
 				<TouchableOpacity onPress={handleOnBack}>
 					<Ionicons name="close" size={24} color="white" />
 				</TouchableOpacity>
 			</View>
-			<View style={styles.actionButtons}>
+			<View className="absolute top-4 right-4 z-10">
 				<TouchableOpacity onPress={toggleCameraFacing}>
 					<MaterialIcons name="flip-camera-ios" size={24} color="white" />
 				</TouchableOpacity>
@@ -24,21 +24,3 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ handleOnBack, togg
 		</>
 	)
 }
-
-const styles = StyleSheet.create({
-	actionButtons: {
-		flex: 1,
-		flexDirection: "row",
-		backgroundColor: "transparent",
-		position: "absolute",
-		top: 16,
-		right: 16,
-		zIndex: 1,
-	},
-	closeButton: {
-		position: "absolute",
-		top: 16,
-		left: 16,
-		zIndex: 1,
-	},
-})

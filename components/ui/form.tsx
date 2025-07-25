@@ -7,7 +7,7 @@ import {
 	FormProvider,
 	useFormContext,
 } from "react-hook-form"
-import { StyleSheet, Text, type TextProps, View, type ViewProps } from "react-native"
+import { Text, type TextProps, View, type ViewProps } from "react-native"
 
 import { Label } from "@/components/ui/label"
 
@@ -49,23 +49,32 @@ const useFormField = () => {
 	}
 }
 
-const FormItem = React.forwardRef<View, ViewProps>(({ style, ...props }, ref) => {
-	return <View ref={ref} style={[styles.formItem, style]} {...props} />
-})
+const FormItem = React.forwardRef<React.ElementRef<typeof View>, ViewProps & { className?: string }>(
+	({ className, ...props }, ref) => {
+		return <View ref={ref} className={`${className}`} {...props} />
+	},
+)
 FormItem.displayName = "FormItem"
 
-const FormLabel = React.forwardRef<Text, TextProps>(({ style, ...props }, ref) => {
-	const { error } = useFormField()
-	return <Label ref={ref} style={[style, error && styles.errorLabel]} {...props} />
-})
+const FormLabel = React.forwardRef<React.ElementRef<typeof Label>, React.ComponentPropsWithoutRef<typeof Label>>(
+	({ className, ...props }, ref) => {
+		const { error } = useFormField()
+		return <Label ref={ref} className={`${className} ${error ? "text-red-500" : ""}`} {...props} />
+	},
+)
 FormLabel.displayName = "FormLabel"
 
-const FormControl = React.forwardRef<View, ViewProps>(({ ...props }, ref) => {
-	return <View ref={ref} {...props} />
-})
+const FormControl = React.forwardRef<React.ElementRef<typeof View>, ViewProps & { className?: string }>(
+	({ className, ...props }, ref) => {
+		return <View ref={ref} className={className} {...props} />
+	},
+)
 FormControl.displayName = "FormControl"
 
-const FormMessage = React.forwardRef<Text, TextProps>(({ style, children, ...props }, ref) => {
+const FormMessage = React.forwardRef<
+	React.ElementRef<typeof Text>,
+	TextProps & { className?: string }
+>(({ className, children, ...props }, ref) => {
 	const { error } = useFormField()
 	const body = error ? String(error?.message) : children
 
@@ -74,26 +83,14 @@ const FormMessage = React.forwardRef<Text, TextProps>(({ style, children, ...pro
 	}
 
 	return (
-		<Text ref={ref} style={[styles.errorMessage, style]} {...props}>
+		<Text ref={ref} className={`text-xs text-red-500 mt-1 ${className}`} {...props}>
 			{body}
 		</Text>
 	)
 })
 FormMessage.displayName = "FormMessage"
 
-const styles = StyleSheet.create({
-	formItem: {
-		marginBottom: 16,
-	},
-	errorLabel: {
-		color: "red",
-	},
-	errorMessage: {
-		color: "red",
-		fontSize: 12,
-		marginTop: 4,
-	},
-})
+
 
 const Form = FormProvider
 

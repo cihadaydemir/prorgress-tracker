@@ -1,5 +1,5 @@
-import type { Control } from "react-hook-form"
 import type { SetupSchema } from "@/app/(app)/setup"
+import type { Control } from "react-hook-form"
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -11,7 +11,7 @@ export function UserForm({ control }: { control: Control<SetupSchema> }) {
 				control={control}
 				name="name"
 				render={({ field: { onChange, onBlur, value } }) => (
-					<FormItem>
+					<FormItem className="mb-4">
 						<FormLabel>Name</FormLabel>
 						<FormControl>
 							<Input placeholder="John Doe" onBlur={onBlur} onChangeText={onChange} value={value} />
@@ -24,7 +24,7 @@ export function UserForm({ control }: { control: Control<SetupSchema> }) {
 				control={control}
 				name="age"
 				render={({ field: { onChange, onBlur, value } }) => (
-					<FormItem>
+					<FormItem className="mb-4">
 						<FormLabel>Age</FormLabel>
 						<FormControl>
 							<Input
@@ -42,7 +42,7 @@ export function UserForm({ control }: { control: Control<SetupSchema> }) {
 				control={control}
 				name="height"
 				render={({ field: { onChange, onBlur, value } }) => (
-					<FormItem>
+					<FormItem className="mb-4">
 						<FormLabel>Height (cm)</FormLabel>
 						<FormControl>
 							<Input

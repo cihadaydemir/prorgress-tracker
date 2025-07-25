@@ -1,6 +1,6 @@
 import type { CameraCapturedPicture } from "expo-camera"
 import type React from "react"
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Text, TouchableOpacity, View } from "react-native"
 
 interface CaptureButtonProps {
 	handleCapture: () => void
@@ -10,43 +10,18 @@ interface CaptureButtonProps {
 
 export const CaptureButton: React.FC<CaptureButtonProps> = ({ handleCapture, handleDoneBtn, images }) => {
 	return (
-		<View style={styles.captureButtonContainer}>
+		<View className="absolute flex-row bottom-8 w-full items-center justify-center">
 			<TouchableOpacity onPress={handleCapture}>
-				<View style={styles.captureButton} />
+				<View className="w-[70px] h-[70px] rounded-full bg-white/70 border-2 border-white" />
 			</TouchableOpacity>
 			{images.length > 0 && (
-				<TouchableOpacity onPress={handleDoneBtn} style={styles.doneButton}>
+				<TouchableOpacity
+					onPress={handleDoneBtn}
+					className="absolute right-4 bg-white/70 p-2.5 rounded-[10px] border-2 border-white"
+				>
 					<Text>Done</Text>
 				</TouchableOpacity>
 			)}
 		</View>
 	)
 }
-
-const styles = StyleSheet.create({
-	captureButtonContainer: {
-		position: "absolute",
-		flexDirection: "row",
-		bottom: 32,
-		width: "100%",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	captureButton: {
-		width: 70,
-		height: 70,
-		borderRadius: 35,
-		backgroundColor: "rgba(255, 255, 255, 0.7)",
-		borderWidth: 2,
-		borderColor: "white",
-	},
-	doneButton: {
-		position: "absolute",
-		right: 16,
-		backgroundColor: "rgba(255, 255, 255, 0.7)",
-		padding: 10,
-		borderRadius: 10,
-		borderWidth: 2,
-		borderColor: "white",
-	},
-})

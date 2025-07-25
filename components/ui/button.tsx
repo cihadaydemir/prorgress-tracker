@@ -1,34 +1,24 @@
 import * as React from "react"
-import { StyleSheet, Text, TouchableOpacity, type TouchableOpacityProps } from "react-native"
+import { Text, TouchableOpacity, type TouchableOpacityProps } from "react-native"
 
 interface ButtonProps extends TouchableOpacityProps {
 	children: React.ReactNode
+	className?: string
 }
 
-const Button = React.forwardRef<TouchableOpacity, ButtonProps>(({ children, style, ...props }, ref) => {
+const Button = React.forwardRef<React.ElementRef<typeof TouchableOpacity>, ButtonProps>(
+	({ children, className, ...props }, ref) => {
 	return (
-		<TouchableOpacity style={[styles.button, style]} ref={ref} {...props}>
-			<Text style={styles.text}>{children}</Text>
+		<TouchableOpacity
+			className={`bg-blue-500 py-2.5 px-5 rounded-lg items-center justify-center ${className}`}
+			ref={ref}
+			{...props}
+		>
+			<Text className="text-white text-base font-semibold">{children}</Text>
 		</TouchableOpacity>
 	)
 })
 
 Button.displayName = "Button"
-
-const styles = StyleSheet.create({
-	button: {
-		backgroundColor: "#007AFF",
-		paddingVertical: 10,
-		paddingHorizontal: 20,
-		borderRadius: 8,
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	text: {
-		color: "#FFFFFF",
-		fontSize: 16,
-		fontWeight: "600",
-	},
-})
 
 export { Button }

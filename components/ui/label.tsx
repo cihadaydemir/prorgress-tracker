@@ -1,18 +1,12 @@
 import * as React from "react"
-import { StyleSheet, Text, type TextProps } from "react-native"
+import { Text, type TextProps } from "react-native"
 
-const Label = React.forwardRef<Text, TextProps>(({ style, ...props }, ref) => {
-	return <Text style={[styles.label, style]} ref={ref} {...props} />
-})
+const Label = React.forwardRef<React.ElementRef<typeof Text>, TextProps & { className?: string }>(
+	({ className, ...props }, ref) => {
+		return <Text ref={ref} className={`text-base font-medium mb-2 ${className}`} {...props} />
+	},
+)
 
 Label.displayName = "Label"
-
-const styles = StyleSheet.create({
-	label: {
-		fontSize: 16,
-		fontWeight: "500",
-		marginBottom: 8,
-	},
-})
 
 export { Label }
