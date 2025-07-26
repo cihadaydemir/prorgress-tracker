@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "expo-router"
 import { useForm } from "react-hook-form"
-import { ScrollView, StyleSheet, Text, View } from "react-native"
+import { ScrollView, Text, View } from "react-native"
 import type { z } from "zod"
 
 import { ProgressForm } from "@/components/ProgressForm"
@@ -61,9 +61,9 @@ export default function SetupPage() {
 
 	return (
 		<Form {...form}>
-			<ScrollView style={styles.container}>
-				<Text style={styles.title}>Setup</Text>
-				<View style={styles.formContainer}>
+			<ScrollView className="flex-1 p-4">
+				<Text className="mb-2 text-3xl font-bold">Setup</Text>
+				<View className="gap-4 py-2">
 					<UserForm control={form.control} />
 					<ProgressForm control={form.control} />
 					<Button onPress={form.handleSubmit(onSubmit)}>Complete Setup</Button>
@@ -72,19 +72,3 @@ export default function SetupPage() {
 		</Form>
 	)
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		padding: 16,
-	},
-	formContainer: {
-		gap: 16,
-		paddingVertical: 8,
-	},
-	title: {
-		fontSize: 32,
-		marginBottom: 8,
-		fontWeight: "bold",
-	},
-})
