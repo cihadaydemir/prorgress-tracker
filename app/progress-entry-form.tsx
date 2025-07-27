@@ -1,5 +1,8 @@
+import ImagePreviewCard from "@/components/image-preview-card"
 import { ProgressForm } from "@/components/ProgressForm"
 import { Form } from "@/components/ui/form"
+import { db } from "@/db/db"
+import { imagePathsTable, progressTable } from "@/db/schema"
 import { insertProgressSchema } from "@/db/zod"
 import { imagesAtom } from "@/stores/camera"
 import Ionicons from "@expo/vector-icons/Ionicons"
@@ -7,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "expo-router"
 import { useAtom } from "jotai"
 import { useForm } from "react-hook-form"
-import { Button, Image, ScrollView, Text, TouchableOpacity, View } from "react-native"
+import { Button, ScrollView, Text, TouchableOpacity, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import type z from "zod"
 
@@ -25,10 +28,29 @@ export default function ProgressEntryForm() {
 	})
 	const router = useRouter()
 
+	const onSubmit = async (data: z.infer<typeof insertProgressSchema>) => {
+		console.log("data", data)
+		const user = await db.query.usersTable.findFirst()
+		if (!user) {
+			return
+		}
+		const [progressEntry] = await db
+			.insert(progressTable)
+			.values({ ...data, userId: user?.id })
+			.returning()
+		images.forEach(async (image) => {
+			await db.insert(imagePathsTable).values({
+				path: image.uri,
+				progressId: progressEntry.id,
+			})
+		})
+		console.log("submitted succesful")
+	}
+
 	console.log("images", images)
 	return (
 		<SafeAreaView className="flex-1 gap-1">
-			<View className="flex-1 flex-row justify-between">
+			<View className="flex-row justify-between">
 				<Text className="text-2xl font-bold">Progress</Text>
 				<TouchableOpacity
 					onPress={() => {
@@ -41,16 +63,24 @@ export default function ProgressEntryForm() {
 				</TouchableOpacity>
 			</View>
 			<Text className="text-lg">Images</Text>
-			<View className="flex-1 gap-2 flex-row">
+			<View className="gap-2 flex-row">
 				{images.length > 0 &&
-					images.map((image) => <Image key={image.uri} src={image.uri} className="h-16 w-16" />)}
+					images.map((image) => (
+						<ImagePreviewCard
+							image={image}
+							onRemove={() => setImages(images.filter((img) => img.uri !== image.uri))}
+							key={image.uri}
+						/>
+					))}
 			</View>
-			<ScrollView>
-				<Form {...form}>
+			<Form {...form} handleSubmit={() => form.handleSubmit(onSubmit)}>
+				<ScrollView>
 					<ProgressForm control={form.control} />
-				</Form>
-			</ScrollView>
-			<Button title="Submit" onPress={form.handleSubmit((data) => console.log(data))} />
+				</ScrollView>
+				<View>
+					<Button onPress={form.handleSubmit(onSubmit)} title={"Submit"} />
+				</View>
+			</Form>
 		</SafeAreaView>
 	)
 }
