@@ -38,6 +38,7 @@
 		"expo-symbols": "~0.4.5",
 		"expo-system-ui": "~5.0.9",
 		"expo-web-browser": "~14.2.0",
+		"jotai": "^2.12.5",
 		"nanoid": "^5.1.5",
 		"nativewind": "^4.1.23",
 		"react": "19.0.0",

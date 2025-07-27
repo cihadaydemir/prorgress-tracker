@@ -5,7 +5,7 @@ import * as schema from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { openDatabaseSync } from "expo-sqlite"
-import { Text, TouchableOpacity, View } from "react-native"
+import { SafeAreaView, Text, TouchableOpacity, View } from "react-native"
 
 export const expo_sqlite = openDatabaseSync(DATABASE_NAME, { enableChangeListener: true })
 export const db = drizzle(expo_sqlite, { schema })
@@ -14,7 +14,7 @@ export default function Home() {
 	const { data: users } = useLiveQuery(db.query.usersTable.findMany())
 
 	return (
-		<View
+		<SafeAreaView
 			style={{
 				flex: 1,
 				justifyContent: "center",
@@ -47,6 +47,6 @@ export default function Home() {
 					</TouchableOpacity>
 				))}
 			</View>
-		</View>
+		</SafeAreaView>
 	)
 }

@@ -12,7 +12,7 @@ import { db } from "@/db/db"
 import { progressTable, usersTable } from "@/db/schema"
 import { insertProgressSchema, insertUserSchema } from "@/db/zod"
 
-const setupSchema = insertUserSchema.merge(insertProgressSchema.omit({ userId: true }))
+export const setupSchema = insertUserSchema.merge(insertProgressSchema.omit({ userId: true }))
 
 export type SetupSchema = z.infer<typeof setupSchema>
 
@@ -52,7 +52,7 @@ export default function SetupPage() {
 					shoulderWidth: values.shoulderWidth,
 					abdominalGirth: values.abdominalGirth,
 				})
-				router.push("/(app)/(tabs)")
+				router.push("/(tabs)")
 			}
 		} catch (error) {
 			console.error("Error during setup:", error)

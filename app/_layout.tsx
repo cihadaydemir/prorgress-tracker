@@ -4,10 +4,9 @@ import { db, expo_sqlite } from "@/db/db"
 import migrations from "@/drizzle/migrations"
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator"
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin"
-import { Slot } from "expo-router"
+import { Stack } from "expo-router"
 import { Suspense } from "react"
 import { ActivityIndicator, Text, View } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function RootLayout() {
 	const { success, error } = useMigrations(db, migrations)
@@ -31,9 +30,10 @@ export default function RootLayout() {
 
 	return (
 		<Suspense fallback={<ActivityIndicator size="large" />}>
-			<SafeAreaView style={{ flex: 1 }}>
-				<Slot />
-			</SafeAreaView>
+			<Stack screenOptions={{ headerShown: false }}>
+				<Stack.Screen name="(setup)" />
+				<Stack.Screen name="(tabs)" />
+			</Stack>
 		</Suspense>
 	)
 }

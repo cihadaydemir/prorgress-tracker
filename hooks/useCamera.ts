@@ -1,10 +1,12 @@
-import { type CameraCapturedPicture, type CameraType, type CameraView, useCameraPermissions } from "expo-camera"
+import { imagesAtom } from "@/stores/camera"
+import { type CameraType, type CameraView, useCameraPermissions } from "expo-camera"
 import { useRouter } from "expo-router"
+import { useAtom } from "jotai"
 import { useEffect, useRef, useState } from "react"
 
 export const useCamera = () => {
 	const [facing, setFacing] = useState<CameraType>("back")
-	const [images, setImages] = useState<CameraCapturedPicture[]>([])
+	const [images, setImages] = useAtom(imagesAtom)
 	const cameraRef = useRef<CameraView>(null)
 	const [permission, requestPermission] = useCameraPermissions()
 	const router = useRouter()
@@ -30,8 +32,8 @@ export const useCamera = () => {
 
 	const handleDoneBtn = () => {
 		//TODO persist images to local storage
-
 		console.log("persisted images", images)
+		router.replace("/progress-entry-form")
 	}
 
 	const removeImage = (index: number) => {

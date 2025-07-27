@@ -1,6 +1,8 @@
 import Ionicons from "@expo/vector-icons/Ionicons"
-import { Tabs } from "expo-router"
-import React from "react"
+import { useLiveQuery } from "drizzle-orm/expo-sqlite"
+import { Tabs, useRouter } from "expo-router"
+import { type ReactNode, useEffect } from "react"
+import { db } from "."
 
 export default function TabLayout() {
 	return (
@@ -28,4 +30,19 @@ export default function TabLayout() {
 			/>
 		</Tabs>
 	)
+}
+
+const SetupGuard = ({ children }: { children: ReactNode }) => {
+	const user = useLiveQuery(db.query.usersTable.findFirst())
+	const router = useRouter()
+	useEffect(() => {
+		console.log("user", user)
+		if (!user) {
+			router.replace("/(setup)/setup")
+		}
+	}, [user])
+	// if (!user.data) {
+	// 	return <Redirect href="/(setup)/setup" />
+	// }
+	return <>{children} </>
 }
