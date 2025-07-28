@@ -19,6 +19,7 @@
 		"@react-navigation/bottom-tabs": "^7.3.10",
 		"@react-navigation/elements": "^2.3.8",
 		"@react-navigation/native": "^7.1.6",
+		"@tanstack/react-query": "^5.83.0",
 		"babel-plugin-inline-import": "^3.0.0",
 		"drizzle-orm": "^0.44.3",
 		"drizzle-zod": "^0.8.2",
