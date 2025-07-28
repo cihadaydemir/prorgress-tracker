@@ -1,6 +1,6 @@
+import * as schema from "@/db/schema"
 import { drizzle } from "drizzle-orm/expo-sqlite/driver"
 import { openDatabaseSync } from "expo-sqlite"
-import * as schema from "@/db/schema"
 
 export const DATABASE_NAME = "db.db"
 
