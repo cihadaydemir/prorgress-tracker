@@ -4,6 +4,7 @@ import { Form } from "@/components/ui/form"
 import { insertProgressSchema } from "@/db/zod"
 import { useCreateImagePath } from "@/hooks/useCreateImagePath"
 import { useCreateProgressEntry } from "@/hooks/useCreateProgressEntry"
+import { useLastProgressEntry } from "@/hooks/useLastProgressEntry"
 import { useUsers } from "@/hooks/useUsers"
 import { imagesAtom } from "@/stores/camera"
 import { persistImageToDevice } from "@/utils/utils"
@@ -11,6 +12,7 @@ import Ionicons from "@expo/vector-icons/Ionicons"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "expo-router"
 import { useAtom } from "jotai"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ScrollView, Text, TouchableOpacity, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -21,6 +23,7 @@ export default function ProgressEntryForm() {
 	const createProgressEntry = useCreateProgressEntry()
 	const createImagePath = useCreateImagePath()
 	const [images, setImages] = useAtom(imagesAtom)
+	const { data: lastEntry } = useLastProgressEntry()
 	const form = useForm<z.infer<typeof insertProgressSchema>>({
 		resolver: zodResolver(insertProgressSchema),
 		defaultValues: {
@@ -31,6 +34,17 @@ export default function ProgressEntryForm() {
 			abdominalGirth: 0,
 		},
 	})
+	useEffect(() => {
+		if (lastEntry) {
+			form.reset({
+				weight: lastEntry.weight,
+				chestCircumference: lastEntry.chestCircumference,
+				shoulderWidth: lastEntry.shoulderWidth,
+				abdominalGirth: lastEntry.abdominalGirth,
+			})
+		}
+	}, [lastEntry, form.reset])
+
 	const router = useRouter()
 
 	const onSubmit = async (data: z.infer<typeof insertProgressSchema>) => {
@@ -77,7 +91,7 @@ export default function ProgressEntryForm() {
 					<Ionicons name="close" size={24} color="black" />
 				</TouchableOpacity>
 			</View>
-			<Text className="text-lg">Images</Text>
+
 			<View className="gap-2 flex-row">
 				{images.length > 0 &&
 					images.map((image) => (

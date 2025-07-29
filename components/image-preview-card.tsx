@@ -5,7 +5,7 @@ import { Image, TouchableOpacity, View } from "react-native"
 export default function ImagePreviewCard({ image, onRemove }: { image: CameraCapturedPicture; onRemove: () => void }) {
 	return (
 		<View className="flex-row" key={image.uri}>
-			<Image source={{ uri: image.uri }} className="m-2 h-16 w-16" />
+			<Image source={{ uri: image.uri }} className="m-2 h-16 w-16 rounded-md" />
 			<View className="absolute right-0 top-0 z-10 rounded-full bg-white">
 				<TouchableOpacity
 					onPress={() => {
