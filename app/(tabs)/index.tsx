@@ -1,65 +1,32 @@
 // import { db } from "@/db/db";
 
-import { DATABASE_NAME } from "@/db/db"
-import * as schema from "@/db/schema"
 import { useProgressEntries } from "@/hooks/useProgressEntries"
-import { useUsers } from "@/hooks/useUsers"
-import { eq } from "drizzle-orm"
-import { drizzle } from "drizzle-orm/expo-sqlite"
-import { openDatabaseSync } from "expo-sqlite"
-import { Image, SafeAreaView, Text, TouchableOpacity, View } from "react-native"
+import { FlatList, SafeAreaView, Text, View } from "react-native"
 
-export const expo_sqlite = openDatabaseSync(DATABASE_NAME, { enableChangeListener: true })
-export const db = drizzle(expo_sqlite, { schema })
+import { ProgressCard } from "../components/ProgressCard"
 
 export default function Home() {
-	const { data: users } = useUsers()
 	const { data: progress } = useProgressEntries()
-	console.log("prgress", progress)
-	return (
-		<SafeAreaView
-			style={{
-				flex: 1,
-				justifyContent: "center",
-				alignItems: "center",
-			}}
-		>
-			<Text>Home</Text>
 
-			<View
-				style={{
-					flex: 1,
-					gap: 10,
-				}}
-			>
-				{users?.map((user) => (
-					<TouchableOpacity
-						key={user.id}
-						onPress={async () => {
-							await db.delete(schema.usersTable).where(eq(schema.usersTable.id, user.id))
-						}}
-					>
-						<Text
-							key={user.id}
-							style={{
-								color: "black",
-							}}
-						>
-							{user.name}
-						</Text>
-					</TouchableOpacity>
-				))}
-				{progress?.map((progress) => (
-					<View key={progress.id}>
-						<Text>{progress.weight}</Text>
-						<View className="flex flex-row gap-2">
-							{progress.images.map((image) => {
-								console.log("image src", image)
-								return <Image key={image} source={{ uri: image }} style={{ width: 50, height: 50 }} />
-							})}
-						</View>
-					</View>
-				))}
+	if (!progress || progress.length === 0)
+		return (
+			<SafeAreaView className="flex-1 bg-gray-100">
+				<View className="flex-1 justify-center items-center">
+					<Text className="text-lg text-gray-500">No progress entries yet.</Text>
+				</View>
+			</SafeAreaView>
+		)
+
+	return (
+		<SafeAreaView className="flex-1 bg-gray-100">
+			<View className="p-4">
+				<Text className="text-2xl font-bold mb-4">Progress History</Text>
+				<FlatList
+					data={progress}
+					keyExtractor={(item) => item.id}
+					renderItem={({ item }) => <ProgressCard entry={item} />}
+					contentContainerStyle={{ paddingBottom: 20 }}
+				/>
 			</View>
 		</SafeAreaView>
 	)
