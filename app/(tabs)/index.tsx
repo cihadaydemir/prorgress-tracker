@@ -3,7 +3,7 @@
 import { useProgressEntries } from "@/hooks/useProgressEntries"
 import { FlatList, SafeAreaView, Text, View } from "react-native"
 
-import { ProgressCard } from "../components/ProgressCard"
+import { ProgressCard } from "../../components/ProgressCard"
 
 export default function Home() {
 	const { data: progress } = useProgressEntries()

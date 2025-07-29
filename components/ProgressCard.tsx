@@ -19,7 +19,16 @@ export function ProgressCard({ entry }: { entry: ProgressData }) {
 			<Text className="text-lg font-bold mb-2">{formatDate(entry.createdAt)}</Text>
 			<ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
 				{entry.images.map((image) => (
-					<Image key={image} source={{ uri: image }} className="w-40 h-40 rounded-lg mr-2" />
+					<Image
+						key={image}
+						source={{ uri: image }}
+						className="rounded-lg mr-2"
+						style={{
+							width: 50,
+							height: 50,
+							borderRadius: 6,
+						}}
+					/>
 				))}
 			</ScrollView>
 			<View className="flex-row flex-wrap">
