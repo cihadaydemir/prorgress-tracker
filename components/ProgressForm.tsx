@@ -1,10 +1,10 @@
-import type { SetupSchema } from "@/app/(app)/setup"
-import type { Control } from "react-hook-form"
-
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import type { insertProgressSchema } from "@/db/zod"
+import type { Control } from "react-hook-form"
+import type z from "zod"
 
-export function ProgressForm({ control }: { control: Control<SetupSchema> }) {
+export function ProgressForm({ control }: { control: Control<z.infer<typeof insertProgressSchema>> }) {
 	return (
 		<>
 			<FormField

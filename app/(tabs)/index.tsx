@@ -2,17 +2,20 @@
 
 import { DATABASE_NAME } from "@/db/db"
 import * as schema from "@/db/schema"
+import { useProgressEntries } from "@/hooks/useProgressEntries"
+import { useUsers } from "@/hooks/useUsers"
 import { eq } from "drizzle-orm"
-import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite"
+import { drizzle } from "drizzle-orm/expo-sqlite"
 import { openDatabaseSync } from "expo-sqlite"
-import { SafeAreaView, Text, TouchableOpacity, View } from "react-native"
+import { Image, SafeAreaView, Text, TouchableOpacity, View } from "react-native"
 
 export const expo_sqlite = openDatabaseSync(DATABASE_NAME, { enableChangeListener: true })
 export const db = drizzle(expo_sqlite, { schema })
 
 export default function Home() {
-	const { data: users } = useLiveQuery(db.query.usersTable.findMany())
-
+	const { data: users } = useUsers()
+	const { data: progress } = useProgressEntries()
+	console.log("prgress", progress)
 	return (
 		<SafeAreaView
 			style={{
@@ -45,6 +48,17 @@ export default function Home() {
 							{user.name}
 						</Text>
 					</TouchableOpacity>
+				))}
+				{progress?.map((progress) => (
+					<View key={progress.id}>
+						<Text>{progress.weight}</Text>
+						<View className="flex flex-row gap-2">
+							{progress.images.map((image) => {
+								console.log("image src", image)
+								return <Image key={image} source={{ uri: image }} style={{ width: 50, height: 50 }} />
+							})}
+						</View>
+					</View>
 				))}
 			</View>
 		</SafeAreaView>

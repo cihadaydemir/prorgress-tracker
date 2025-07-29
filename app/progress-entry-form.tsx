@@ -1,10 +1,12 @@
 import ImagePreviewCard from "@/components/image-preview-card"
 import { ProgressForm } from "@/components/ProgressForm"
 import { Form } from "@/components/ui/form"
-import { db } from "@/db/db"
-import { imagePathsTable, progressTable } from "@/db/schema"
 import { insertProgressSchema } from "@/db/zod"
+import { useCreateImagePath } from "@/hooks/useCreateImagePath"
+import { useCreateProgressEntry } from "@/hooks/useCreateProgressEntry"
+import { useUsers } from "@/hooks/useUsers"
 import { imagesAtom } from "@/stores/camera"
+import { persistImageToDevice } from "@/utils/utils"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "expo-router"
@@ -15,6 +17,9 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import type z from "zod"
 
 export default function ProgressEntryForm() {
+	const { data: users } = useUsers()
+	const createProgressEntry = useCreateProgressEntry()
+	const createImagePath = useCreateImagePath()
 	const [images, setImages] = useAtom(imagesAtom)
 	const form = useForm<z.infer<typeof insertProgressSchema>>({
 		resolver: zodResolver(insertProgressSchema),
@@ -29,25 +34,35 @@ export default function ProgressEntryForm() {
 	const router = useRouter()
 
 	const onSubmit = async (data: z.infer<typeof insertProgressSchema>) => {
-		console.log("data", data)
-		const user = await db.query.usersTable.findFirst()
-		if (!user) {
-			return
-		}
-		const [progressEntry] = await db
-			.insert(progressTable)
-			.values({ ...data, userId: user?.id })
-			.returning()
-		images.forEach(async (image) => {
-			await db.insert(imagePathsTable).values({
-				path: image.uri,
-				progressId: progressEntry.id,
-			})
-		})
-		console.log("submitted succesful")
+		if (!users) return
+
+		const user = users[0]
+		createProgressEntry.mutate(
+			{ ...data, userId: user.id },
+			{
+				onSuccess: async (progressEntry) => {
+					const persistedImages = await persistImageToDevice(images)
+					persistedImages.forEach(async (image) => {
+						createImagePath.mutate(
+							{ progressId: progressEntry[0].id, path: image },
+							{
+								onSuccess: () => {
+									router.replace("/")
+								},
+								onError: (e) => {
+									console.error("Error creating image path entry", e)
+								},
+							},
+						)
+					})
+				},
+				onError: (e) => {
+					console.error("Error creating progress entry", e)
+				},
+			},
+		)
 	}
 
-	console.log("images", images)
 	return (
 		<SafeAreaView className="flex-1 gap-1">
 			<View className="flex-row justify-between">
@@ -73,12 +88,17 @@ export default function ProgressEntryForm() {
 						/>
 					))}
 			</View>
-			<Form {...form} handleSubmit={() => form.handleSubmit(onSubmit)}>
+			<Form {...form}>
 				<ScrollView>
 					<ProgressForm control={form.control} />
 				</ScrollView>
 				<View>
-					<Button onPress={form.handleSubmit(onSubmit)} title={"Submit"} />
+					<Button
+						onPress={() => {
+							onSubmit(form.getValues())
+						}}
+						title={"Submit"}
+					/>
 				</View>
 			</Form>
 		</SafeAreaView>

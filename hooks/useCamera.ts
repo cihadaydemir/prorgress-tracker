@@ -31,8 +31,6 @@ export const useCamera = () => {
 	}
 
 	const handleDoneBtn = () => {
-		//TODO persist images to local storage
-		console.log("persisted images", images)
 		router.replace("/progress-entry-form")
 	}
 
