@@ -1,4 +1,4 @@
-import type { ThemeMode } from "@/types/theme"
+import type { ThemeMode } from "@/theme/types"
 import { atom } from "jotai"
 import { atomWithStorage } from "jotai/utils"
 import { Appearance } from "react-native"
