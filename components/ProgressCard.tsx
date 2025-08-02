@@ -1,11 +1,7 @@
 import { formatDate } from "@/utils/utils"
 import { Image } from "expo-image"
 import Ionicons from "@expo/vector-icons/Ionicons"
-import { styled } from "nativewind"
 import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native"
-
-const StyledIonicons = styled(Ionicons)
-const StyledImage = styled(Image)
 
 import { useDeleteProgressEntry } from "@/hooks/useDeleteProgressEntry"
 
@@ -36,12 +32,12 @@ export function ProgressCard({ entry }: { entry: ProgressData }) {
                                 onPress={handleDelete}
                                 className="absolute right-2 top-2 p-1 rounded-full"
                         >
-                                <StyledIonicons name="trash" size={20} className="text-red-600" />
+                                <Ionicons name="trash" size={20} className="text-red-600" />
                         </TouchableOpacity>
                         <Text className="text-lg font-bold mb-2">{formatDate(entry.createdAt)}</Text>
 			<ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
                                 {entry.images.map((image) => (
-                                        <StyledImage
+                                        <Image
                                                 key={image}
                                                 source={{ uri: image }}
                                                 className="mr-2 h-12 w-12 rounded-lg"
