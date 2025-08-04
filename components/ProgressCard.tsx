@@ -15,9 +15,9 @@ export type ProgressData = {
 
 export function ProgressCard({ entry }: { entry: ProgressData }) {
 	return (
-		<View className="bg-white rounded-lg shadow-md p-4 mb-4">
+		<View className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
 			<Text className="text-lg font-bold mb-2">{formatDate(entry.createdAt)}</Text>
-			<ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
+			<ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4 w-full flex-1">
 				{entry.images.map((image) => (
 					<Image
 						key={image}
