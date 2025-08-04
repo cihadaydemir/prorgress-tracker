@@ -22,11 +22,12 @@ export function ProgressCard({ entry }: { entry: ProgressData }) {
 					<Image
 						key={image}
 						source={{ uri: image }}
-						className="rounded-lg mr-2"
+						className="rounded-lg"
 						style={{
 							width: 50,
 							height: 50,
 							borderRadius: 6,
+							marginRight: 6,
 						}}
 					/>
 				))}
